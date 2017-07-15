@@ -9,6 +9,7 @@
  */
 function ghcjsajax$sendRequest(url, method, requestBody, contentType, cont) {
     var onComplete = function (status, body) {
+      console.log(status, body);
         cont({ "status": status, "body": body });
     };
     var req = ghcjsajax$createXMLHTTPObject();

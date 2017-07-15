@@ -15,6 +15,8 @@ import Network.HTTP.Types.Method
 import Network.HTTP.Types.Status
 import qualified Data.Text as T
 
+import Control.Monad.IO.Class (liftIO)
+
 #ifdef __GHCJS__
 import Data.JSString
 import Data.JSString.Text (textToJSString)
@@ -44,12 +46,19 @@ sendRequest :: StdMethod -> T.Text -> Maybe RequestBody -> Maybe ContentType -> 
 #ifdef __GHCJS__
 sendRequest method url mBody mContentType =
     do jsCt <- toJSVal mContentType
+       liftIO $ print "sr1"
        jsBody <- toJSVal mBody
+       liftIO $ print "sr2"
        jsRes <- js_sendRequest (textToJSString url) jsMethod jsBody jsCt
+       liftIO $ print "sr3"
+       pure jsRes
+       {-
        val <- fromJSValUnchecked jsRes
+       liftIO $ print "sr4"
        case fromJSON val of
          Error msg -> fail $ "Internal error (JavaScript.Ajax): " ++ msg
          Success v -> pure v
+         -}
     where
       jsMethod =
           case method of
