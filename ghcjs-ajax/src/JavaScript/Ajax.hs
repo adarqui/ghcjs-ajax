@@ -51,14 +51,12 @@ sendRequest method url mBody mContentType =
        liftIO $ print "sr2"
        jsRes <- js_sendRequest (textToJSString url) jsMethod jsBody jsCt
        liftIO $ print "sr3"
-       pure jsRes
-       {-
+       -- pure jsRes
        val <- fromJSValUnchecked jsRes
        liftIO $ print "sr4"
        case fromJSON val of
          Error msg -> fail $ "Internal error (JavaScript.Ajax): " ++ msg
          Success v -> pure v
-         -}
     where
       jsMethod =
           case method of
